@@ -1,0 +1,6 @@
+*.log
+*.zip
+node_modules/*
+res/tmp/*
+.idea/
+.vscode/

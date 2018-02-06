@@ -1,0 +1,1 @@
+cd ../ && git diff --name-status --cached head > diff.log
