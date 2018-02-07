@@ -1,6 +1,3 @@
-/**
- * Created by yaojia7 on 2017/7/26.
- */
 console.log(process.env.NODE_ENV)
 if(!process.env.NODE_ENV){
     process.env.NODE_ENV = 'development';

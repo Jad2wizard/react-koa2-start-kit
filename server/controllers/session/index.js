@@ -41,8 +41,6 @@ const setSession = (app) => {
                 const user = await userModel.fetch(sessionId.split('_')[0]);
                 if(user){
                     if(Number(sessionId.split('_')[1]) < moment().valueOf()){
-                        console.log(moment(Number(sessionId.split('_')[1])).format('YYYY-MM-DD HH:mm:ss'));
-                        console.log(moment().format('YYYY-MM-DD HH:mm:ss'));
                         ctx.session = null;
                         ctx.response.redirect(`/login?nextUrl=${encodeURIComponent(ctx.path)}`);
                     }

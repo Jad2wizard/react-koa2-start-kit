@@ -8,4 +8,4 @@
 ## Usage
 1. npm install --production
 2. npm run startProduction
-3. http://127.0.0.1:3030
+3. http://127.0.0.1:3000
