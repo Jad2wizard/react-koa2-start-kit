@@ -1,7 +1,6 @@
 /**
  * Created by Jad_PC on 2018/1/30.
  */
-
 const MediaUtils = {
     /**
      * 获取用户媒体设备(处理兼容的问题)
@@ -66,7 +65,7 @@ let recorderFile, stopRecordCallback;
 let videoEnabled = false;
 
 // 录制短语音
-const startRecord = enableVideo => {
+export const startRecord = enableVideo => {
     videoEnabled = enableVideo;
     MediaUtils.getUserMedia(enableVideo, true, (err, stream) => {
         if (err) {
@@ -101,7 +100,7 @@ const stopRecord = (callback) => {
 };
 
 // 播放录制的音频
-const playRecord = () => {
+export const playRecord = () => {
     let url = URL.createObjectURL(recorderFile);
     let dom = document.createElement(videoEnabled ? 'video' : 'audio');
     dom.autoplay = true;
@@ -127,19 +126,21 @@ const sendRecordFile = () => {
     };
     formData.append('file', recorderFile);
     options.body = formData;
-    fetch('http://127.0.0.1:3000/api/record-file', options);
+    fetch('http://127.0.0.1:3000/api/record-file', options).then(res => res.json()).then(res => {
+        console.log(res);
+        res = res[0] || '';
+        if(res.includes('测试一')){
+            window.store.dispatch(window.routerActions.push('/test1'));
+        }else if(res.includes('测试二')){
+            window.store.dispatch(window.routerActions.push('/test2'));
+        }
+    });
 };
 
-window.play = () => {
-    // 启动录制视频 (若需要录制音频参数指定为 false 即可)
+export const startVoiceRecord = () => {
     startRecord(false);
-    // 5秒后结束录制并播放
-    setTimeout(() => {
-        // 结束
-        stopRecord(() => {
-            sendRecordFile();
-            // 播放
-            playRecord();
-        });
-    }, 5000);
+};
+
+export const stopAndSendRecord = () => {
+    stopRecord(sendRecordFile);
 };

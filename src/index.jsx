@@ -13,8 +13,8 @@ import Login from './Home/Login';
 import Header from './Home/header';
 import Test1 from './components/test1';
 import Test2 from './components/test2';
+import VoiceButton from './components/voiceBtn';
 
-import './utils/voiceCapture';
 import {Provider} from 'react-redux';
 import {syncHistoryWithStore} from 'react-router-redux';
 import store from './store';
@@ -40,6 +40,7 @@ class Root extends React.Component{
                         children && children || null
                     }
                 </Content>
+                <VoiceButton/>
             </Layout>
         );
     }

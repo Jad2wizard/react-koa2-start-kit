@@ -23,8 +23,8 @@ const transcode = (objFile) => {
 const recognize = (pcmFile) => {
     return new Promise((res, rej) => {
         try{
-            console.log(pcmFile)
-            console.log(resolve(config.tmpPath, pcmFile))
+            // console.log(pcmFile)
+            // console.log(resolve(config.tmpPath, pcmFile))
             const voice = fs.readFileSync(resolve(config.tmpPath, pcmFile));
             const vb = new Buffer(voice);
             client.recognize(vb, 'pcm', 16000).then(data => {
