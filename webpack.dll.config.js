@@ -2,8 +2,6 @@
  * Created by yaojia7 on 2017/5/31.
  */
 const webpack = require('webpack');
-console.log('this is dll build')
-console.log(process.env.NODE_ENV)
 const vendors = [
     'react',
     'react-dom',

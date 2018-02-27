@@ -1,11 +1,5 @@
-//公用消除浮动
-%clearfloat{
-  &:after{
-    content:'';
-    display: block;
-    clear:both;
-  }
-}
+@import "./../variable.scss";
+
 $btnInputHeight: 31px;
 $fontSize: 16px;
 

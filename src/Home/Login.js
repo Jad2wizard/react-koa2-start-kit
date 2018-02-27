@@ -51,7 +51,7 @@ class Login extends React.Component{
                     <div className={styles.inputContainer}>
                         <div className={styles.inputTitle}><p>密码</p></div>
                         <div className={styles.inputSection}>
-                            <Input disabled={isLoading} type="text" value={password} onChange={(e) => {this.handleChange({password: e.target.value});}} placeholder="请输入密码" />
+                            <Input disabled={isLoading} type="password" value={password} onChange={(e) => {this.handleChange({password: e.target.value});}} placeholder="请输入密码" />
                         </div>
                     </div>
                     <div className={styles.buttonContainer}>

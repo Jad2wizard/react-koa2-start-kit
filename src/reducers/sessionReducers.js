@@ -8,7 +8,18 @@ import {sessionActions} from './../actions';
 const user = (state = window.user, action) => {
     switch (action.type){
         case sessionActions.LOGIN_RECEIVE:
-            return action.user;
+            return action.user.username;
+        case sessionActions.LOGOUT_RECEIVE:
+            return null;
+        default:
+            return state;
+    }
+};
+
+const email = (state = window.email, action) => {
+    switch (action.type){
+        case sessionActions.LOGIN_RECEIVE:
+            return action.user.email;
         case sessionActions.LOGOUT_RECEIVE:
             return null;
         default:
@@ -33,7 +44,8 @@ const isLoading = (state = false, action) => {
 
 const getSession = combineReducers({
     isLoading,
-    user
+    user,
+    email
 });
 
 export default getSession;

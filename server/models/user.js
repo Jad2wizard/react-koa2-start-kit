@@ -32,7 +32,7 @@ const add = (user) => new Promise((resolve, reject) => {
     }
 
     console.log('bingo')
-    const addUser = Object.assign({}, user, {role: 'member', isDelete: false, isLogged: false, createTime: moment().valueOf()});
+    const addUser = Object.assign({}, {role: 'member', isDelete: false, isLogged: false, createTime: moment().valueOf(), lastLogTime: moment().valueOf()}, user);
 
     neo4jDB.cypherQuery(`create (n:Person {${Object.keys(addUser).map(k => k + ':"' + `${user[k]}`+'"').join(',')}}) return n;`, (err, node) => {
         if(err){
@@ -67,12 +67,25 @@ const fetch = (name) => new Promise((resolve, reject) => {
     })
 });
 
-fetch('test').then(res => console.log(res)).catch(err => {
-    console.warn(err);
-})
+const update = (user) => new Promise((resolve, reject) => {
+    const name = user.name;
+    if(!name){
+        reject('更新用户数据时缺少用户名');
+    }
+    delete user.name;
+    console.log('match (n {name: "' + name + `" }) set ${Object.keys(user).map(key => `n.${key} = "` + `${user[key]}"`).join(',')} return properties(n);`)
+    neo4jDB.cypherQuery('match (n {name: "' + name + `" }) set ${Object.keys(user).map(key => `n.${key} = "` + `${user[key]}"`).join(',')} return properties(n);`, (err, res) => {
+        if(err){
+            reject(err);
+        } else {
+            resolve(res.data[0]);
+        }
+    });
+});
 
 module.exports = {
     add,
     remove,
-    fetch
+    fetch,
+    update
 }

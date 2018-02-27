@@ -49,8 +49,11 @@ const delay = (time = 1000) => new Promise(res => {
     setTimeout(res, time);
 });
 
+const isString = (obj) => Object.prototype.toString.call(obj) === "[object String]";
+
 module.exports = {
     getLocalIP,
     getFilesCount,
-    delay
+    delay,
+    isString
 };

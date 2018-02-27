@@ -1,0 +1,8 @@
+//公用消除浮动
+%clearfloat{
+  &:after{
+    content:'';
+    display: block;
+    clear:both;
+  }
+}

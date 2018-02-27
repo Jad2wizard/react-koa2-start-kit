@@ -1,0 +1,19 @@
+@import "./../variable.scss";
+
+.container {
+  h1{
+    display: inline-block;
+  }
+}
+.icon{
+  display: inline-block;
+}
+
+.logout{
+  display: inline-block;
+  float: right;
+  :hover{
+    cursor: pointer;
+  }
+  @extend %clearfloat;
+}

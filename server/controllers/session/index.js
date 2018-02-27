@@ -82,6 +82,7 @@ const login = async (ctx) => {
             return;
         }
         const sessionId = user.name + '_' + moment().add(MAX_AGE, 'second').valueOf();
+        userModel.update({name: user.name, lastLogTime: moment().valueOf()});
         ctx.session.sessionId = sessionId;
         ctx.body = {
             success: '1',

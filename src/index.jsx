@@ -10,7 +10,9 @@ moment.prototype.YMDHms = function () {
 };
 import {Layout} from 'antd';
 import Login from './Home/Login';
-import Test from './components/test';
+import Header from './Home/header';
+import Test1 from './components/test1';
+import Test2 from './components/test2';
 
 import './utils/voiceCapture';
 import {Provider} from 'react-redux';
@@ -32,13 +34,12 @@ class Root extends React.Component{
         const children = this.props.children;
         return (
             <Layout className='layout'>
-                <Layout className={styles.pageLayout}>
-                    <Content className={styles.pageContent}>
-                        {
-                            children && children || <Home />
-                        }
-                    </Content>
-                </Layout>
+                <Header/>
+                <Content className={styles.pageContent}>
+                    {
+                        children && children || null
+                    }
+                </Content>
             </Layout>
         );
     }
@@ -54,24 +55,19 @@ class NotFoundPage extends React.Component{
     }
 }
 
-class Home extends React.Component{
-    render(){
-        return (
-            <div>This is Home!</div>
-        );
-    }
-}
-
 const routes = (
     <Route>
         <Route path='/login' component={Login} />
         <Route path='/' component={Root}>
-            <IndexRoute component={Test} />
+            <IndexRoute component={Test1} />
+            <Route path='/test1' component={Test1} />
+            <Route path='/test2' component={Test2} />
             <Route path='/404' component={NotFoundPage} />
             <Redirect from='*' to='/404' />
         </Route>
     </Route>
 );
+
 /* eslint-enable */
 class Routers extends React.Component{
     render(){
