@@ -14,7 +14,8 @@ const fileStorage = multer.diskStorage({
     filename: (req, file, cb) => {
         if(file){
             let filename = file.originalname.split('.')[0];
-            let suffix = file.originalname.split('.')[1] || 'mp3';
+            let suffix = file.originalname.split('.')[1] || 'pcm';
+            // let suffix = file.originalname.split('.')[1] || 'mp3';
             let timestamp = moment().valueOf();
             req.body.filename = `${filename}_${timestamp}.${suffix}`;
             req.body.originalname = file.originalname;

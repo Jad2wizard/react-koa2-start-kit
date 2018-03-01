@@ -4,15 +4,7 @@
 const session = require('koa-session');
 const moment = require('moment');
 const userModel = require('./../../models/user');
-
-const MAX_AGE = 60 * 60 * 24; //秒
-const ignorePath = ['/__webpack_hmr', '/favicon.ico', '/login'];
-const ignoreFuzzyPath = ['hot-update', '/css/', '/js/', '/font/', '/record-file'];
-const sessionConfig = {
-    httpOnly: false,
-    maxAge: 24 * 60 * 60 * 1000,
-    key: 'Jad2Wizard:sess'
-};
+const {MAX_AGE, sessionConfig, ignorePath, ignoreFuzzyPath} = require('./config');
 
 /**
  * 判断当前请求是否需要进行登录验证
