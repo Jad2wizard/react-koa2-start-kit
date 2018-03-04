@@ -22,16 +22,18 @@ neo4jDB.cypherQuery('call db.constraints', (err, res) => {
 
 const add = (user) => new Promise((resolve, reject) => {
     if(!user.hasOwnProperty('password')){
-        reject('缺少密码');
+        reject({message: '缺少密码'});
+        return;
     }
     if(!user.hasOwnProperty('name')){
-        reject('缺少用户名');
+        reject({message: '缺少用户名'});
+        return;
     }
     if(!user.hasOwnProperty('email')){
-        reject('缺少邮箱地址');
+        reject({message: '缺少邮箱地址'});
+        return;
     }
 
-    console.log('bingo')
     const addUser = Object.assign({}, {role: 'member', isDelete: false, isLogged: false, createTime: moment().valueOf(), lastLogTime: moment().valueOf()}, user);
 
     neo4jDB.cypherQuery(`create (n:Person {${Object.keys(addUser).map(k => k + ':"' + `${user[k]}`+'"').join(',')}}) return n;`, (err, node) => {

@@ -1,11 +1,13 @@
 /**
- * Created by Jad_PC on 2018/2/6.
+ * Created by Jad_PC on 2018/3/4.
  */
 import React from 'react';
 import {connect} from 'react-redux';
+import {routerActions} from 'react-router-redux';
 import {Input, message} from 'antd';
-import {sessionActions} from './../actions';
+import {sessionActions} from './../../actions';
 import styles from './Login.scss';
+
 const checkUsername = (username) => {
     if(!username){
         return '用户名不能为空';
@@ -19,12 +21,23 @@ const checkPassword = (password) => {
     }
     return null;
 };
-class Login extends React.Component{
+
+const checkEmail = (email) => {
+    if(!email){
+        return '邮箱不能为空';
+    }
+    return null;
+};
+
+
+class Register extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            email: '',
+            isRegister: false
         };
     }
 
@@ -36,12 +49,12 @@ class Login extends React.Component{
     }
 
     render(){
-        const {handleLogin, isLoading} = this.props;
-        const {username, password} = this.state;
+        const {isLoading, handleRegister, jumpToLogin} = this.props;
+        const {username, password, email} = this.state;
         return (
             <div className={styles.container}>
                 <section className={styles.loginBlock}>
-                    <header className={styles.header}><p>登录</p></header>
+                    <header className={styles.header}><p>注册</p></header>
                     <div className={styles.inputContainer}>
                         <div className={styles.inputTitle}><p>用户名</p></div>
                         <div className={styles.inputSection}>
@@ -54,9 +67,17 @@ class Login extends React.Component{
                             <Input disabled={isLoading} type="password" value={password} onChange={(e) => {this.handleChange({password: e.target.value});}} placeholder="请输入密码" />
                         </div>
                     </div>
+                    <div className={styles.inputContainer}>
+                        <div className={styles.inputTitle}><p>邮箱</p></div>
+                        <div className={styles.inputSection}>
+                            <Input disabled={isLoading} type="text" value={email} onChange={(e) => {
+                                this.handleChange({email: e.target.value});
+                            }} placeholder="请输入邮箱地址"/>
+                        </div>
+                    </div>
                     <div className={styles.buttonContainer}>
-                        <button disabled={isLoading} className={styles.button} onClick={() => {handleLogin(username, password);}}>登录</button>
-                        <button disabled={isLoading} className={styles.button}>注册</button>
+                        <button disabled={isLoading} className={`${styles.button} ${styles.confirmBtn}`} onClick={() => {handleRegister(username, password, email);}}>确认</button>
+                        <button disabled={isLoading} className={`${styles.button} ${styles.registerBtn}`} onClick={jumpToLogin}>取消</button>
                     </div>
                 </section>
             </div>
@@ -70,9 +91,10 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    handleLogin: (username, password) => {
+    handleRegister: (username, password, email) => {
         const usnCheckRes = checkUsername(username);
         const pwdCheckRes = checkPassword(password);
+        const emailCheckRes = checkEmail(email);
         if(usnCheckRes){
             message.warn(usnCheckRes);
             return;
@@ -81,8 +103,15 @@ const mapDispatchToProps = dispatch => ({
             message.warn(pwdCheckRes);
             return;
         }
-        dispatch(sessionActions.login('request', {username, password}));
+        if(emailCheckRes){
+            message.warn(emailCheckRes);
+            return;
+        }
+        dispatch(sessionActions.register('request', {username, password, email}));
+    },
+    jumpToLogin: () => {
+        dispatch(routerActions.push('/login'));
     }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

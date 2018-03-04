@@ -6,16 +6,13 @@ import {all, take, call, put, fork} from 'redux-saga/effects';
 import {routerActions} from 'react-router-redux';
 import {sessionActions} from './../actions';
 import {message} from 'antd';
-// import message from 'antd/lib/message';
-// import 'antd/lib/message/style';
-// const message = require('antd/lib/message');
-// require('antd/lib/message/style')
 import fetchProxy from './../utils/fetchProxy';
 
 window.message = message;
 const delay = time => new Promise(res => {setTimeout(res, time);});
 const loginUrl = `${location.origin}/login`;
 const logoutUrl = `${location.origin}/logout`;
+const registerUrl = `${location.origin}/register`;
 
 window.routerActions = routerActions;
 function* login({username, password}){
@@ -59,6 +56,25 @@ function* logout(){
     }
 }
 
+function* register({username, password, email}){
+    try {
+        let result = yield call(fetchProxy, registerUrl, {
+            method: 'POST',
+            contentType: 'application/json',
+            payload: {name: username, password, email}
+        });
+        if (result.success === '0') {
+            message.error(result.value);
+        }
+        if (result.success === '1') {
+            message.success(result.value);
+            yield put(routerActions.push('/login'));
+        }
+    } catch(err){
+        message.error(err);
+    }
+}
+
 function* watchLogin(){
     while(true){
         const {username, password} = yield take(sessionActions.LOGIN_REQUEST);
@@ -73,6 +89,13 @@ function* watchLogout(){
     }
 }
 
+function* watchRegister(){
+    while(true){
+        const {username, password, email} = yield take(sessionActions.REGISTER_REQUEST);
+        yield fork(register, {username, password, email});
+    }
+}
+
 export default function* sessionSaga(){
-    yield all([call(watchLogin), call(watchLogout)]);
+    yield all([call(watchLogin), call(watchLogout), call(watchRegister)]);
 }

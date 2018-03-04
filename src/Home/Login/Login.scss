@@ -1,4 +1,4 @@
-@import "./../variable.scss";
+@import "./../../variable.scss";
 
 $btnInputHeight: 31px;
 $fontSize: 16px;
@@ -59,7 +59,6 @@ $fontSize: 16px;
   }
   button {
     display: inline-block;
-    background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
     border: 1px rgb(132, 106, 41) solid;
     border-radius: 3px;
     width: 100%;
@@ -68,7 +67,13 @@ $fontSize: 16px;
     box-shadow: 0 1px 0 rgba(255,255,255,.4) inset;
     margin: 16px 0;
   }
-  button:last-of-type{
+  .loginBtn {
+    background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+  }
+  .confirmBtn {
+    background: linear-gradient(to top, rgb(19, 215, 31), rgb(99, 215, 31));
+  }
+  .registerBtn{
     margin-top: 4px;
     background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
   }

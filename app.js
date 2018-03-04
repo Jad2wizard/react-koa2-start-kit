@@ -12,10 +12,9 @@ const {env} = require('./server/utils/renderer');
 const ws = require(path.resolve(__dirname, './server/models/webSock'));
 const routers = require(path.resolve(__dirname, './server/routers/index'));
 const config = require('./config');
-const {setSession, getUser} = require('./server/controllers/session');
+const {setSession} = require('./server/controllers/session');
 const app = new Koa();
 
-setSession(app);
 
 const NODE_ENV = process.env.NODE_ENV;
 
@@ -37,14 +36,19 @@ if(NODE_ENV == 'development' && config.hotUpdate) {
 app.use(bodyParser({
     formLimit: '5000kb'
 }));
+
+//静态路由中间件
 app.use(koaStatic(
     path.join(__dirname , './res')
 ));
 
+//添加鉴权认证中间件，位于静态路由后面，静态路由不用进行认证
+setSession(app);
+
 app.use(routers.routes()).use(routers.allowedMethods());
 
 app.use(async (ctx) => {
-    const user = await getUser(ctx);
+    const user = ctx.session.user || null;
     ctx.response.body = env.render('index.html', {user: user || {user: '', email: ''}});
 });
 

@@ -4,12 +4,14 @@ import ReactDOM from 'react-dom';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
+
 //添加moment获取日期格式的原型函数
 moment.prototype.YMDHms = function () {
     return this.format('YYYY-MM-DD HH:mm:ss');
 };
 import {Layout} from 'antd';
-import Login from './Home/Login';
+import Login from './Home/Login/Login';
+import Register from './Home/Login/Register';
 import Header from './Home/header';
 import Test1 from './components/test1';
 import Test2 from './components/test2';
@@ -59,6 +61,7 @@ class NotFoundPage extends React.Component{
 const routes = (
     <Route>
         <Route path='/login' component={Login} />
+        <Route path='/register' component={Register} />
         <Route path='/' component={Root}>
             <IndexRoute component={Test1} />
             <Route path='/test1' component={Test1} />

@@ -35,6 +35,8 @@ const setSession = (app) => {
                     if(Number(sessionId.split('_')[1]) < moment().valueOf()){
                         ctx.session = null;
                         ctx.response.redirect(`/login?nextUrl=${encodeURIComponent(ctx.path)}`);
+                    } else {
+                        ctx.session.user = {user: user.name, email: user.email};
                     }
                 } else {
                     ctx.response.redirect(`/login?nextUrl=${encodeURIComponent(ctx.path)}`);
@@ -91,6 +93,46 @@ const login = async (ctx) => {
     }
 };
 
+const register = async (ctx) => {
+    try {
+        const name = ctx.request.body.name;
+        const password = ctx.request.body.password;
+        const email = ctx.request.body.email;
+        let user = await userModel.fetch(name);
+        if (user) {
+            ctx.body = {
+                success: '0',
+                value: '用户名已存在'
+            };
+            return;
+        }
+        // user = await userModel.fetchUser({email});
+        // if (user) {
+        //     ctx.body = {
+        //         success: '0',
+        //         value: '邮箱地址已被注册'
+        //     };
+        //     return;
+        // }
+        await userModel.add({
+            name,
+            password,
+            email
+        });
+        // request.postJson(config.emailServer, {sub: '注册激活邮件', receiver: email, content: `激活请点击链接:\n\thttp://${localIP}:${config.port}/activate-user?token=${userId}`});
+        ctx.body = {
+            success: '1',
+            value: '注册成功'
+        };
+    }catch(err){
+        console.log(err)
+        ctx.body = {
+            success: '0',
+            value: `注册失败: ${err.message}`
+        };
+    }
+};
+
 const logout = async (ctx) => {
     try{
         ctx.session.sessionId = null;
@@ -118,5 +160,6 @@ module.exports = {
     setSession,
     getUser,
     login,
-    logout
+    logout,
+    register
 };
