@@ -48,6 +48,7 @@
     "babel-preset-stage-1": "6.24.1",
     "cross-env": "5.0.0",
     "css-loader": "0.28.1",
+    "d3": "4.13.0",
     "eslint": "3.19.0",
     "eslint-plugin-react": "7.0.0",
     "eventsource-polyfill": "0.9.6",
