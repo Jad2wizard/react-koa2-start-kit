@@ -1,7 +1,7 @@
 {
-  "name": "parthenon-react",
+  "name": "react-start-kit",
   "version": "1.0.0",
-  "description": "使基于React对parthenon项目的重构",
+  "description": "react栈项目脚手架，包括react+redux前端，Koa2+neo4j后端服务器",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
