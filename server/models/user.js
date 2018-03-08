@@ -35,8 +35,12 @@ const add = (user) => new Promise((resolve, reject) => {
     }
 
     const addUser = Object.assign({}, {role: 'member', isDelete: false, isLogged: false, createTime: moment().valueOf(), lastLogTime: moment().valueOf()}, user);
-
-    neo4jDB.cypherQuery(`create (n:Person {${Object.keys(addUser).map(k => k + ':"' + `${user[k]}`+'"').join(',')}}) return n;`, (err, node) => {
+    console.log(addUser)
+    const addStr = Object.keys(addUser).map(k => {
+        const val = addUser[k];
+        return (typeof  val !== 'boolean') ? k + ':"' + `${val}`+'"' : k + `:${val}`;
+    }).join(',');
+    neo4jDB.cypherQuery(`create (n:Person {${addStr}}) return n;`, (err, node) => {
         if(err){
             if(err.message.includes('exists')){
                 reject('用户名已经存在');
@@ -48,6 +52,7 @@ const add = (user) => new Promise((resolve, reject) => {
         }
     })
 });
+
 
 const remove = (name) => new Promise((resolve, reject) => {
     neo4jDB.cypherQuery('match (n) where n.name = "' + `${name}` + '"delete n;', (err, res) => {
@@ -75,8 +80,11 @@ const update = (user) => new Promise((resolve, reject) => {
         reject('更新用户数据时缺少用户名');
     }
     delete user.name;
-    console.log('match (n {name: "' + name + `" }) set ${Object.keys(user).map(key => `n.${key} = "` + `${user[key]}"`).join(',')} return properties(n);`)
-    neo4jDB.cypherQuery('match (n {name: "' + name + `" }) set ${Object.keys(user).map(key => `n.${key} = "` + `${user[key]}"`).join(',')} return properties(n);`, (err, res) => {
+    const updateStr = Object.keys(user).map(key => {
+        const val = user[key];
+        return (typeof val !== 'boolean') ? `n.${key} = "` + `${user[key]}"` : `n.${key} = ${val}`;
+    }).join(',');
+    neo4jDB.cypherQuery('match (n {name: "' + name + `" }) set ${updateStr} return properties(n);`, (err, res) => {
         if(err){
             reject(err);
         } else {

@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const config = require('./config');
 if(!process.env.NODE_ENV){
     process.env.NODE_ENV = 'development';
 }
@@ -10,7 +11,7 @@ module.exports = {
     devtool: 'inline-source-map',
     entry: (NODE_ENV == 'development')?[
         'eventsource-polyfill',
-        'webpack-hot-middleware/client?path=http://127.0.0.1:3000/__webpack_hmr&timeout=20000',
+        `webpack-hot-middleware/client?path=http://127.0.0.1:${config.port}/__webpack_hmr&timeout=20000`,
         __dirname + '/src/index.jsx'
     ]:[
         __dirname + '/src/index.jsx'
@@ -18,7 +19,7 @@ module.exports = {
     output: {
         path: __dirname + '/res/js',
         filename: 'bundle.js',
-        publicPath: 'http://127.0.0.1:3000/js/'
+        publicPath: `http://127.0.0.1:${config.port}/js/`
     },
     resolve: {
         extensions: ['.js', '.jsx']

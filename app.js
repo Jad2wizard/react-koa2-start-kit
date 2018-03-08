@@ -52,7 +52,7 @@ app.use(async (ctx) => {
     ctx.response.body = env.render('index.html', {user: user || {user: '', email: ''}});
 });
 
-let server = app.listen(3000);
+let server = app.listen(config.port);
 ws.createWS(server);
 
-console.log('Listening...');
+console.log(`Listening on ${config.port}...`);
