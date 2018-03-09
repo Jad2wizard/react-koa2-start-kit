@@ -1,6 +1,7 @@
 /**
  * Created by Jad_PC on 2018/1/25.
  */
+
 const resolve = require('path').resolve;
 const request = require('request-promise');
 const tmpPath = resolve(__dirname, './res/tmp');
